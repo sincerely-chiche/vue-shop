@@ -1,6 +1,5 @@
 <template>
   <v-app>
-    <navigator v-if="!getIsAdminState"></navigator>
     <v-content class="pb-10">
       <router-view></router-view>
     </v-content>
@@ -8,20 +7,25 @@
 </template>
 
 <script>
-import navigator from "./components/Navigation";
+import { fb } from "./firebase";
 
 export default {
   name: "App",
-  components: {
-    navigator
-  },
+  components: {},
   data: () => ({
     //
   }),
   computed: {
     getIsAdminState() {
       return this.$store.state.isAdmin;
-    }
-  }
+    },
+    user() {
+      this.$store.getters.getUser;
+    },
+  },
+
+  mounted() {
+    let me = this;
+  },
 };
 </script>

@@ -1,11 +1,9 @@
 <template>
   <div>
-    <v-system-bar color="green darken-2"></v-system-bar>
-
-    <v-app-bar color="green darken-1" dark>
+    <v-app-bar color="green darken-1" dark flat>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>My files</v-toolbar-title>
+      <v-toolbar-title>Dashboard</v-toolbar-title>
 
       <div class="flex-grow-1"></div>
 
@@ -14,59 +12,110 @@
       </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" temporary bottom absolute>
+    <v-navigation-drawer v-model="drawer" temporary absolute>
+      <h1 class="subtitle pl-5 py-4 grey--text">Shop</h1>
+      <v-divider></v-divider>
+
       <v-list-item>
         <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
+          <v-img
+            height="60"
+            min-width="60"
+            src="https://randomuser.me/api/portraits/men/78.jpg"
+          ></v-img>
         </v-list-item-avatar>
 
         <v-list-item-content>
           <v-list-item-title>John Leider</v-list-item-title>
+          <v-list-item-subtitle>Administrator</v-list-item-subtitle>
+
+          <v-list-item-subtitle>
+            <v-badge color="green" dot inline left>online</v-badge>
+          </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
 
       <v-divider></v-divider>
 
-      <v-text-field class="my-5 mx-2" placeholder="Search" append-icon="search" outlined></v-text-field>
+      <v-text-field
+        active-class="txtSearch"
+        class="txtSearch my-5 mx-2"
+        placeholder="Search"
+        append-icon="search"
+        outlined
+      ></v-text-field>
 
       <v-divider></v-divider>
       <v-list nav dense>
-        <v-list-item-group v-model="group" active-class="deep-purple--text text--accent-4">
-          <v-list-item>
-            <v-list-item-title>Foo</v-list-item-title>
+        <v-subheader>MENU</v-subheader>
+        <v-list-item-group
+          v-model="group"
+          active-class="deep-purple--text text--accent-4"
+        >
+          <v-list-item @click="$router.push('/admin/overview')">
+            <v-list-item-avatar>
+              <v-icon>show_chart</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-title>Overview</v-list-item-title>
           </v-list-item>
 
-          <v-list-item>
-            <v-list-item-title>Bar</v-list-item-title>
+          <v-list-item @click="$router.push('/admin/products')">
+            <v-list-item-avatar>
+              <v-icon>storefront</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-title>Products</v-list-item-title>
           </v-list-item>
 
-          <v-list-item>
-            <v-list-item-title>Fizz</v-list-item-title>
+          <v-list-item @click="$router.push('/admin/orders')">
+            <v-list-item-avatar>
+              <v-icon>shopping_cart</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-title>Orders</v-list-item-title>
           </v-list-item>
 
-          <v-list-item>
-            <v-list-item-title>Buzz</v-list-item-title>
+          <v-list-item @click="logOut()">
+            <v-list-item-avatar>
+              <v-icon>power_settings_new</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-title>Logout</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
+    <v-container>
+      <router-view></router-view>
+    </v-container>
   </div>
 </template>
 <script>
+import { db, fb } from "../firebase";
+
 export default {
   data: () => ({
     drawer: false,
-    group: null
+    group: null,
   }),
 
   watch: {
     group() {
       this.drawer = false;
-    }
-  }
+    },
+  },
+  methods: {
+    logOut() {
+      fb.auth()
+        .signOut()
+        .then(() => {
+          this.$router.replace("/");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
 };
 </script>
-<style scoped>
+<style scoped lang="scss">
 .v-text-field--outlined .v-label {
   top: 0px !important;
 }
@@ -79,7 +128,7 @@ export default {
   border: 2px solid currentColor !important;
 }
 
-.theme--light.v-text-field--outlined fieldset {
+.txtSearch.v-text-field--outlined fieldset {
   /* border-color: rgba(51, 199, 103, 0.24) !important; */
   border: 2px dashed rgba(51, 199, 103, 0.24) !important;
   /* max-height: 30px !important; */
@@ -100,7 +149,7 @@ export default {
   min-height: 20px !important;
 }
 
-.v-text-field.v-text-field--enclosed {
-  /* height: 10px !important; */
+.v-input .txtSearch .v-input__append-inner {
+  margin-top: 5px !important;
 }
 </style>
