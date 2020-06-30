@@ -1,5 +1,10 @@
 import firebase from "firebase";
+import VueFirestore from "vue-firestore";
+import Vue from "vue";
+
 require("firebase/firestore");
+
+Vue.use(VueFirestore, { key: "id" });
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
