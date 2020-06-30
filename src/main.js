@@ -5,6 +5,9 @@ import "./registerServiceWorker";
 import vuetify from "./plugins/vuetify";
 import store from "./store";
 import { fb } from "./firebase";
+import Swal from "sweetalert2";
+
+window.Swal = Swal;
 
 Vue.config.productionTip = false;
 

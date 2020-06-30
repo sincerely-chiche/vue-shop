@@ -161,7 +161,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .v-text-field--outlined .v-label {
   top: 10px !important;
 }
